@@ -22,7 +22,7 @@ Try {
     $pathforusers= $Prefix + "\" + $DownloadFolderName
     $DownloadPath = $pathforusers
     $List = Get-PnPList -Identity "Documents"
-    Log-Message "We are trying to download $($DownloadFolderName) "
+    Log-Message "$($DownloadFolderName) indirmesi denenmektedir. "
     #ilerleme cubugu
     $global:counter = 0
     $ListItems = Get-PnPListItem -List $List -PageSize 500 -Fields ID -ScriptBlock { Param($items) $global:counter += $items.Count; Write-Progress -PercentComplete `
@@ -45,12 +45,12 @@ Try {
             $FileDownloadPath = ($DownloadPath +($_.FieldValues.FileRef.Substring($Web.ServerRelativeUrl.Length)) -replace "/","\").Replace($_.FieldValues.FileLeafRef,'')
             [System.Uri]::EscapeDataString($_.FieldValues.FileRef)
             Get-PnPFile -ServerRelativeUrl $_.FieldValues.FileRef -Path $FileDownloadPath -FileName $_.FieldValues.FileLeafRef -AsFile -force
-            Write-host -f Green "Downloaded File from '$($_.FieldValues.FileRef)'"
+            Write-host -f Green "Dosya '$($_.FieldValues.FileRef)' icerisinden indirilmektedir"
 
         }
         catch
         {
-            Log-Message "Error: $($DownloadFolderName) Detail: $($_.Exception.Message)"
+            Log-Message "Hata: $($DownloadFolderName) Detay: $($_.Exception.Message)"
         }
 
         }
@@ -58,7 +58,7 @@ Try {
 }
 Catch {
 
-            write-host "Error: $($_.Exception.Message)" -foregroundcolor Red
-            Log-Message "Error: $($DownloadFolderName) Detail: $($_.Exception.Message)"
+            write-host "Hata: $($_.Exception.Message)" -foregroundcolor Red
+            Log-Message "Hata: $($DownloadFolderName) Detay: $($_.Exception.Message)"
         }
 Set-SPOUser -Site $OneDriveSiteUrl -LoginName $admin -IsSiteCollectionAdmin $false
