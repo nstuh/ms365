@@ -26,7 +26,7 @@ Try {
     #ilerleme cubugu
     $global:counter = 0
     $ListItems = Get-PnPListItem -List $List -PageSize 500 -Fields ID -ScriptBlock { Param($items) $global:counter += $items.Count; Write-Progress -PercentComplete `
-                ($global:Counter / ($List.ItemCount) * 100) -Activity "OneDrive'dan veriler alinmaktadir:" -Status "Processing Items $global:Counter to $($List.ItemCount)";}
+                ($global:Counter / ($List.ItemCount) * 100) -Activity "OneDrive'dan veriler alinmaktadir:" -Status "$global:Counter - $($List.ItemCount)";}
     Write-Progress -Activity "OneDrive'dan tum veriler alinmistir." -Completed
 
     $SubFolders = $ListItems | Where {$_.FileSystemObjectType -eq "Folder" -and $_.FieldValues.FileLeafRef -ne "Forms"}
